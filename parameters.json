@@ -2,12 +2,32 @@
     "$schema": "https://schema.management.azure.com/schemas/2019-04-01/deploymentParameters.json#",
     "contentVersion": "1.0.0.0",
     "parameters": {
-        "sqlDatabaseSku": {
-            "value": {
-                "name": "sqlDatabaseSku.name",
-                "tier": "sqlDatabaseSku.tier",
-                "size": "sqlDatabaseSku.size"
-            }
+        "serverName" :{
+            "value": "server1" 
+        },
+        "databaseConfigurations": {
+            "value": [
+                {
+                    "name": "DB1",
+                    "skuName": "Basic"
+                },
+                {
+                    "name": "DB2",
+                    "skuName": "Basic"
+                }
+            ]
+        },
+        "fwRules": {
+            "value": [
+                {
+                    "startIp": "1.1.1.1",
+                    "endIp": "9.9.9.9"
+                },
+                {
+                    "startIp": "5.5.5.5",
+                    "endIp": "6.6.6.6"
+                }
+            ]
         }
     }
 }
