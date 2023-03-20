@@ -36,16 +36,21 @@ resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
   }
 }
 
-var fireRulesConfigurations = [ { name:sqlfirewallName, startIpAddress: startIpAddress, endIpAddress: endIpAddress  },  {name: sqlfirewallName, startIpAddress: startIpAddress, endIpAddress: endIpAddress  }]
+param fireRulesConfigurations array = [
+  { name: sqlfirewallName, startIpAddress: startIpAddress, endIpAddress: endIpAddress }
+  { name: sqlfirewallName, startIpAddress: startIpAddress, endIpAddress: endIpAddress }
+]
 
-resource sqlFR 'Microsoft.Sql/servers/firewallRules@2022-05-01-preview' = [for (sqlFR, i) in fireRulesConfigurations: {
-  parent: sqlServer
-  name: '${sqlFRPrefix}${fireRulesConfigurations}${i}'
+
+resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
+  name: serverName
+  location: location
   properties: {
-    startIpAddress: startIpAddress
-    endIpAddress: endIpAddress
+    administratorLogin: administratorLogin
+    administratorLoginPassword: administratorPassword
   }
-}]
+}
+
 
 var databaseConfigurations = [  { name: sqlDBName, tier: sqlDatabaseSku, size: sqlDatabaseSku },  { name: sqlDBName, tier: sqlDatabaseSku, size: sqlDatabaseSku  }]
 
