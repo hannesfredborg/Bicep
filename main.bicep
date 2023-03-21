@@ -39,10 +39,9 @@ resource sqlDb 'Microsoft.Sql/servers/databases@2022-05-01-preview' = [for (db, 
   location: location
   sku: {
     name: db.skuName
+    tier: contains(db, 'skuTier') ? db.skuTier : null
+    size: contains(db, 'skuSize') ? db.skuSize : null
+
 
   }
 }]
-
-
-
-

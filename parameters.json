@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverName" :{
-            "value": "server1" 
+            "value": "naensh1" 
         },
         "databaseConfigurations": {
             "value": [
@@ -20,12 +20,12 @@
         "fwRules": {
             "value": [
                 {
-                    "startIp": "1.1.1.1",
-                    "endIp": "9.9.9.9"
+                    "startIpAddress": "1.1.1.1",
+                    "endIpAddress": "9.9.9.9"
                 },
                 {
-                    "startIp": "5.5.5.5",
-                    "endIp": "6.6.6.6"
+                    "startIpAddress": "5.5.5.5",
+                    "endIpAddress": "6.6.6.6"
                 }
             ]
         }
