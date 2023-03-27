@@ -13,7 +13,9 @@ param administratorPassword string
 
 param databaseConfigurations array = []
 param fwRules array = []
-param sqlDbIdName array = []
+param sqlDbName array = []
+param sqlDbId array = [
+]
 
 resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
   name: serverName
@@ -46,9 +48,9 @@ resource sqlDb 'Microsoft.Sql/servers/databases@2022-05-01-preview' = [for (db, 
   }
 }]
 
-output sqlServerIdName string = '${sqlServer.id} - ${sqlServer.name}'
 
-output sqlDdIdName array = [for db in sqlDbIdName: {
-  id: db.id
-  name:db.name
-}]
+output sqlServerId string = sqlServer.id
+output sqlServerName string = sqlServer.name
+
+output sqlDbName array = [for db in sqlDbName: db.id]
+output sqlDbId array = [for db in sqlDbId: db.name]
