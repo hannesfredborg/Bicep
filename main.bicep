@@ -11,6 +11,12 @@ param administratorLogin string
 @description('The administrator login password for the SQL server')
 param administratorPassword string
 
+@description('The Key Vault name')
+param keyVaultName string
+
+@description('The tenant Id')
+param tenantId string
+
 param databaseConfigurations array = []
 param fwRules array = []
 param sqlDbName array = []
@@ -48,9 +54,42 @@ resource sqlDb 'Microsoft.Sql/servers/databases@2022-05-01-preview' = [for (db, 
   }
 }]
 
-
 output sqlServerId string = sqlServer.id
 output sqlServerName string = sqlServer.name
 
 output sqlDbName array = [for db in sqlDbName: db.id]
 output sqlDbId array = [for db in sqlDbId: db.name]
+
+resource PowerShellScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
+  name: 'password-generate'
+  location: location
+  kind: 'AzurePowerShell'
+  properties: {
+    azPowerShellVersion: '5.1' 
+    retentionInterval: 'P1D'
+    scriptContent: loadTextContent('./generatepwd.ps1')
+  }
+}
+
+output encoded string =  PowerShellScript.properties.outputs.encodedPassword
+output plain string =  PowerShellScript.properties.outputs.password
+
+resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
+  name: keyVaultName
+  location: location
+  properties: {
+    sku:{
+      family: 'A'
+      name: 'standard'
+      }
+      tenantId:tenantId
+  }
+}
+resource secret 'Microsoft.KeyVault/vaults/secrets@2022-11-01' = {
+  name: 'password'
+  parent:keyVault
+  properties: {
+    value: PowerShellScript.properties.outputs.password
+  }
+
+}
