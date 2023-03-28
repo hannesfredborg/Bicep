@@ -27,8 +27,10 @@
    $scriptParameters = "spadmin $EncodedText"
   #$scriptParameters = "spadmin $EncodedText"
 
-  Write-Host 'plaintext Password:: '$password
-  Write-Host 'encoded Password:: '$EncodedText
   $DeploymentScriptOutputs = @{}
   $DeploymentScriptOutputs['password'] = $password
   $DeploymentScriptOutputs['encodedPassword'] = $EncodedText
+
+  # Removing password from console
+  Write-Host 'plaintext Password:: [hidden]'
+  Write-Host 'encoded Password:: [hidden]'

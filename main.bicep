@@ -17,6 +17,12 @@ param keyVaultName string
 @description('The tenant Id')
 param tenantId string
 
+@allowed([
+  'new'
+  'existing'
+])
+param newOrExisting string = 'new'
+
 param databaseConfigurations array = []
 param fwRules array = []
 param sqlDbName array = []
@@ -74,7 +80,7 @@ resource PowerShellScript 'Microsoft.Resources/deploymentScripts@2020-10-01' = {
 output encoded string =  PowerShellScript.properties.outputs.encodedPassword
 output plain string =  PowerShellScript.properties.outputs.password
 
-resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
+resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' =  if (newOrExisting == 'new') {
   name: keyVaultName
   location: location
   properties: {
@@ -82,12 +88,14 @@ resource keyVault 'Microsoft.KeyVault/vaults@2022-11-01' = {
       family: 'A'
       name: 'standard'
       }
-      tenantId:tenantId
+      tenantId: tenantId
+    }
   }
-}
+
+
 resource secret 'Microsoft.KeyVault/vaults/secrets@2022-11-01' = {
   name: 'password'
-  parent:keyVault
+  parent: keyVault
   properties: {
     value: PowerShellScript.properties.outputs.password
   }
