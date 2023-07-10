@@ -26,8 +26,7 @@ param newOrExisting string = 'new'
 param databaseConfigurations array = []
 param fwRules array = []
 param sqlDbName array = []
-param sqlDbId array = [
-]
+param sqlDbId array = []
 
 resource sqlServer 'Microsoft.Sql/servers@2022-05-01-preview' = {
   name: serverName

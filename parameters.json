@@ -3,7 +3,7 @@
     "contentVersion": "1.0.0.0",
     "parameters": {
         "serverName" :{
-            "value": "naensh1" 
+            "value": "naenshdb" 
         },
         "databaseConfigurations": {
             "value": [
